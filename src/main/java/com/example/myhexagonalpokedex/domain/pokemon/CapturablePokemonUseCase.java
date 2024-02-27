@@ -2,10 +2,10 @@ package com.example.myhexagonalpokedex.domain.pokemon;
 
 import java.util.List;
 
-public class CapturablePokemonService {
+public class CapturablePokemonUseCase {
     private final PokemonApiFetcher pokemonApiFetcher;
 
-    public CapturablePokemonService(PokemonApiFetcher pokemonApiFetcher) {
+    public CapturablePokemonUseCase(PokemonApiFetcher pokemonApiFetcher) {
         this.pokemonApiFetcher = pokemonApiFetcher;
     }
 
