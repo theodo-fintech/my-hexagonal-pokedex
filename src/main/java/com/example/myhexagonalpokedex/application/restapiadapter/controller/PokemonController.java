@@ -20,7 +20,7 @@ public class PokemonController {
     @GetMapping("/capturable")
     List<PokemonDTO> findCapturablePokemon() {
         return capturablePokemonService
-                .findAll()
+                .findAllInTopTwenty()
                 .stream()
                 .map(PokemonMapper::fromDomainToDto)
                 .toList();

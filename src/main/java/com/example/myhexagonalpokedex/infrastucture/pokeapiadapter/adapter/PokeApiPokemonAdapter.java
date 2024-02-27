@@ -8,7 +8,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class PokeApiPokemonAdapter implements PokemonApiFetcher {
     @Override
-    public List<Pokemon> findAll() {
+    public List<Pokemon> findTopTwenty() {
         return List.of();
     }
 }
