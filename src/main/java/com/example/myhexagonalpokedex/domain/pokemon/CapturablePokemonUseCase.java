@@ -9,7 +9,7 @@ public class CapturablePokemonUseCase {
         this.pokemonApiFetcher = pokemonApiFetcher;
     }
 
-    public List<Pokemon> findAllInTopTwenty() {
+    public List<CapturablePokemon> findAllInTopTwenty() {
         return pokemonApiFetcher.findTopTwenty();
     }
 }

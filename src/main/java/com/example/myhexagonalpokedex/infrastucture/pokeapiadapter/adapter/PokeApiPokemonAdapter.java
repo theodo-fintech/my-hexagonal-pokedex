@@ -1,6 +1,6 @@
 package com.example.myhexagonalpokedex.infrastucture.pokeapiadapter.adapter;
 
-import com.example.myhexagonalpokedex.domain.pokemon.Pokemon;
+import com.example.myhexagonalpokedex.domain.pokemon.CapturablePokemon;
 import com.example.myhexagonalpokedex.domain.pokemon.PokemonApiFetcher;
 import com.example.myhexagonalpokedex.infrastucture.pokeapiadapter.PokeApiHttpClient;
 import com.example.myhexagonalpokedex.infrastucture.pokeapiadapter.dto.PokeApiPokemonDTOList;
@@ -18,7 +18,7 @@ public class PokeApiPokemonAdapter implements PokemonApiFetcher {
     }
 
     @Override
-    public List<Pokemon> findTopTwenty() {
+    public List<CapturablePokemon> findTopTwenty() {
         final PokeApiPokemonDTOList pokeApiPokemonDTOList = pokeApiHttpClient.findTopTwenty();
         return PokemonMapper.fromDtoListToDomainList(pokeApiPokemonDTOList);
     }

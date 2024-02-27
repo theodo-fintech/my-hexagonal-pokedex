@@ -2,7 +2,7 @@ package com.example.myhexagonalpokedex.infrastucture.pokeapiadapter.mapper;
 
 import static java.lang.Integer.parseInt;
 
-import com.example.myhexagonalpokedex.domain.pokemon.Pokemon;
+import com.example.myhexagonalpokedex.domain.pokemon.CapturablePokemon;
 import com.example.myhexagonalpokedex.infrastucture.pokeapiadapter.dto.PokeApiPokemonDTO;
 import com.example.myhexagonalpokedex.infrastucture.pokeapiadapter.dto.PokeApiPokemonDTOList;
 import java.util.ArrayList;
@@ -11,13 +11,13 @@ import java.util.List;
 
 public interface PokemonMapper {
 
-    static List<Pokemon> fromDtoListToDomainList(PokeApiPokemonDTOList pokeApiPokemonDTOList) {
-        List<Pokemon> pokemons = new ArrayList<>();
+    static List<CapturablePokemon> fromDtoListToDomainList(PokeApiPokemonDTOList pokeApiPokemonDTOList) {
+        List<CapturablePokemon> capturablePokemons = new ArrayList<>();
         Arrays.stream(pokeApiPokemonDTOList.getPokemons()).forEach(pokeApiPokemonDTO -> {
             final int pokemonId = extractIdFromPokemonUrl(pokeApiPokemonDTO);
-            pokemons.add(new Pokemon(pokemonId, pokeApiPokemonDTO.getName(), null));
+            capturablePokemons.add(new CapturablePokemon(pokemonId, pokeApiPokemonDTO.getName()));
         });
-        return pokemons;
+        return capturablePokemons;
     }
 
     private static int extractIdFromPokemonUrl(PokeApiPokemonDTO pokeApiPokemonDTO) {

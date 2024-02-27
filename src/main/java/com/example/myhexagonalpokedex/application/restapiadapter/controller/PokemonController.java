@@ -1,6 +1,6 @@
 package com.example.myhexagonalpokedex.application.restapiadapter.controller;
 
-import com.example.myhexagonalpokedex.application.restapiadapter.dto.PokemonDTO;
+import com.example.myhexagonalpokedex.application.restapiadapter.dto.CapturablePokemonDTO;
 import com.example.myhexagonalpokedex.application.restapiadapter.mapper.PokemonMapper;
 import com.example.myhexagonalpokedex.domain.pokemon.CapturablePokemonUseCase;
 import java.util.List;
@@ -18,7 +18,7 @@ public class PokemonController {
     }
 
     @GetMapping("/capturable")
-    List<PokemonDTO> findCapturablePokemon() {
+    List<CapturablePokemonDTO> findCapturablePokemon() {
         return capturablePokemonUseCase
                 .findAllInTopTwenty()
                 .stream()
