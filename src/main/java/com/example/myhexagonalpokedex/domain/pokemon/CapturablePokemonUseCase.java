@@ -12,6 +12,7 @@ public class CapturablePokemonUseCase {
     }
 
     public List<CapturablePokemon> findAllInTopTwenty() {
+        final List<Pokemon> ownedPokemons = pokemonRepositoryFetcher.findAll();
         return pokemonApiFetcher.findTopTwenty();
     }
 }
