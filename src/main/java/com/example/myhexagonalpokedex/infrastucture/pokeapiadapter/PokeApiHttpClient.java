@@ -1,6 +1,8 @@
 package com.example.myhexagonalpokedex.infrastucture.pokeapiadapter;
 
 
+import com.example.myhexagonalpokedex.core.exception.ExceptionCode;
+import com.example.myhexagonalpokedex.core.exception.MyHexagonalPokedexException;
 import com.example.myhexagonalpokedex.infrastucture.pokeapiadapter.dto.PokeApiPokemonDTOList;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
@@ -8,6 +10,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -38,10 +41,25 @@ public class PokeApiHttpClient {
             if (statusCode == 200) {
                 return objectMapper.readValue(httpResponse.body(), responseBodyClass);
             }
-            final String message = String.format("Error fetching resources from %s", uri);
-            throw new RuntimeException(message);
+            throw buildPokeApiHttpStatusCodeException(httpResponse);
         } catch (IOException | InterruptedException e) {
-            throw new RuntimeException(e);
+            throw buildErrorWhileExecutingHttpRequestException(uri, e);
         }
+    }
+
+    private MyHexagonalPokedexException buildPokeApiHttpStatusCodeException(HttpResponse<byte[]> httpResponse) {
+        byte[] responseBody = httpResponse.body();
+        String rootErrorMessage = new String(responseBody, StandardCharsets.UTF_8);
+        final String message = String.format(
+                "Error while calling pokeapi uri %s, root error message is %s",
+                httpResponse.uri(),
+                rootErrorMessage
+        );
+        return new MyHexagonalPokedexException(ExceptionCode.POKEAPI_ERROR, message);
+    }
+
+    private static MyHexagonalPokedexException buildErrorWhileExecutingHttpRequestException(String uri, Throwable rootException) {
+        final String message = String.format("Error while calling %s", uri);
+        return new MyHexagonalPokedexException(ExceptionCode.ERROR_WHILE_EXECUTING_HTTP_REQUEST, message, rootException);
     }
 }
