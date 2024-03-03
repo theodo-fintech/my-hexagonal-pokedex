@@ -12,7 +12,11 @@ public class CapturablePokemonUseCase {
     }
 
     public List<CapturablePokemon> findAllInTopTwenty() {
-        final List<Pokemon> ownedPokemons = pokemonRepositoryFetcher.findAll();
-        return pokemonApiFetcher.findTopTwenty();
+        final List<Integer> ownedPokemonIdList = pokemonRepositoryFetcher.findAll().stream().map(Pokemon::id).toList();
+        return pokemonApiFetcher
+                .findTopTwenty()
+                .stream()
+                .filter(pokemon -> !ownedPokemonIdList.contains(pokemon.id()))
+                .toList();
     }
 }
