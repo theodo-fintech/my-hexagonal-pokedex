@@ -15,7 +15,8 @@ public class DomainConfiguration {
 
     @Bean
     public CapturePokemonUseCase capturePokemonUseCase(PokemonApiFetcher pokemonApiFetcher,
+                                                       PokemonRepositoryFetcher pokemonRepositoryFetcher,
                                                        PokemonRepositorySaver pokemonRepositorySaver) {
-        return new CapturePokemonUseCase(pokemonApiFetcher, pokemonRepositorySaver);
+        return new CapturePokemonUseCase(pokemonApiFetcher, pokemonRepositoryFetcher, pokemonRepositorySaver);
     }
 }
