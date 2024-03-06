@@ -11,11 +11,11 @@ import java.util.Optional;
 import org.springframework.stereotype.Component;
 
 @Component
-public class PostgresPokemonAdapter implements PokemonRepositoryFetcher {
+public class PostgresPokemonFetcherAdapter implements PokemonRepositoryFetcher {
 
     private final PokemonRepository pokemonRepository;
 
-    public PostgresPokemonAdapter(PokemonRepository pokemonRepository) {
+    public PostgresPokemonFetcherAdapter(PokemonRepository pokemonRepository) {
         this.pokemonRepository = pokemonRepository;
     }
 
