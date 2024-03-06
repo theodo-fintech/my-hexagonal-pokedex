@@ -9,6 +9,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
@@ -32,5 +33,19 @@ class PokemonIT extends MyHexagonalPokedexIT {
                 .andExpect(jsonPath("$[1].name").value("ivysaur"))
                 .andExpect(jsonPath("$[2].id").value(3))
                 .andExpect(jsonPath("$[2].name").value("venusaur"));
+    }
+
+    @Test
+    void should_save_new_capturable_pokemon() throws Exception {
+        mockMvc
+                .perform(MockMvcRequestBuilders.post("/pokemon")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                 "id": 2
+                                }
+                                 """)
+                )
+                .andExpect(status().isOk());
     }
 }
