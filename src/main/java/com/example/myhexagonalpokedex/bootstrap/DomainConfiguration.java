@@ -17,7 +17,7 @@ public class DomainConfiguration {
     }
 
     @Bean
-    public CapturePokemonUseCase capturePokemonUseCase() {
-        return new CapturePokemonUseCase();
+    public CapturePokemonUseCase capturePokemonUseCase(PokemonApiFetcher pokemonApiFetcher) {
+        return new CapturePokemonUseCase(pokemonApiFetcher);
     }
 }

@@ -4,6 +4,7 @@ package com.example.myhexagonalpokedex.infrastucture.pokeapiadapter;
 import com.example.myhexagonalpokedex.core.exception.ExceptionCode;
 import com.example.myhexagonalpokedex.core.exception.MyHexagonalPokedexException;
 import com.example.myhexagonalpokedex.infrastucture.pokeapiadapter.dto.PokeApiPokemonDTOList;
+import com.example.myhexagonalpokedex.infrastucture.pokeapiadapter.dto.PokemonDetailsDTO;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.net.URI;
@@ -32,6 +33,11 @@ public class PokeApiHttpClient {
     public PokeApiPokemonDTOList findTopTwenty() {
         final String uri = pokeapiBaseUrl + "/pokemon";
         return get(uri, PokeApiPokemonDTOList.class);
+    }
+
+    public PokemonDetailsDTO findById(Integer pokemonId) {
+        final String uri = pokeapiBaseUrl + "/pokemon/" + pokemonId;
+        return get(uri, PokemonDetailsDTO.class);
     }
 
     private <ResponseBody> ResponseBody get(String uri, Class<ResponseBody> responseBodyClass) {

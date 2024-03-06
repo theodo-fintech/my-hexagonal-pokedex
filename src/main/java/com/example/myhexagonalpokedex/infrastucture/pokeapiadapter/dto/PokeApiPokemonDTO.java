@@ -5,7 +5,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class PokeApiPokemonDTO {
     @JsonProperty("name")
     private String name;
-
     @JsonProperty("url")
     private String url;
 
