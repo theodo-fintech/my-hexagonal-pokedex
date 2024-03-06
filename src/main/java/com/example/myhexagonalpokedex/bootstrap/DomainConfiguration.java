@@ -1,9 +1,6 @@
 package com.example.myhexagonalpokedex.bootstrap;
 
-import com.example.myhexagonalpokedex.domain.pokemon.CapturablePokemonUseCase;
-import com.example.myhexagonalpokedex.domain.pokemon.CapturePokemonUseCase;
-import com.example.myhexagonalpokedex.domain.pokemon.PokemonApiFetcher;
-import com.example.myhexagonalpokedex.domain.pokemon.PokemonRepositoryFetcher;
+import com.example.myhexagonalpokedex.domain.pokemon.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
@@ -17,7 +14,8 @@ public class DomainConfiguration {
     }
 
     @Bean
-    public CapturePokemonUseCase capturePokemonUseCase(PokemonApiFetcher pokemonApiFetcher) {
-        return new CapturePokemonUseCase(pokemonApiFetcher);
+    public CapturePokemonUseCase capturePokemonUseCase(PokemonApiFetcher pokemonApiFetcher,
+                                                       PokemonRepositorySaver pokemonRepositorySaver) {
+        return new CapturePokemonUseCase(pokemonApiFetcher, pokemonRepositorySaver);
     }
 }

@@ -19,6 +19,15 @@ public class PokemonEntity {
     @Column(name = "ability", nullable = false)
     private String ability;
 
+    public PokemonEntity(Integer id, String name, String ability) {
+        this.id = id;
+        this.name = name;
+        this.ability = ability;
+    }
+
+    public PokemonEntity() {
+    }
+
     public int getId() {
         return id;
     }
