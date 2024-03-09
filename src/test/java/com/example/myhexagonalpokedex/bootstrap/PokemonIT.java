@@ -3,10 +3,14 @@ package com.example.myhexagonalpokedex.bootstrap;
 import static com.github.tomakehurst.wiremock.client.WireMock.aResponse;
 import static com.github.tomakehurst.wiremock.client.WireMock.get;
 import static com.github.tomakehurst.wiremock.client.WireMock.urlPathEqualTo;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.hamcrest.Matchers.hasSize;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
+import com.example.myhexagonalpokedex.infrastucture.postgresadapter.entity.PokemonEntity;
+import com.example.myhexagonalpokedex.infrastucture.postgresadapter.repository.PokemonRepository;
+import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -17,14 +21,20 @@ class PokemonIT extends MyHexagonalPokedexIT {
     @Autowired
     MockMvc mockMvc;
 
+    @Autowired
+    PokemonRepository pokemonRepository;
+
     @Test
     void should_retrieve_capturable_pokemons_within_top_twenty_without_owned_pokemon() throws Exception {
+        // Given
         wireMockServer.stubFor(
                 get(
                         urlPathEqualTo("/pokemon"))
                         .willReturn(aResponse().withBodyFile("pokeapi_stubs/get_top_twenty_pokemons.json")));
+        // When
         mockMvc
                 .perform(MockMvcRequestBuilders.get("/pokemon/capturable"))
+                // Then
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
                 .andExpect(jsonPath("$[0].id").value(1))
@@ -37,6 +47,13 @@ class PokemonIT extends MyHexagonalPokedexIT {
 
     @Test
     void should_save_new_capturable_pokemon() throws Exception {
+        // Given
+        wireMockServer.stubFor(
+                get(
+                        urlPathEqualTo("/pokemon/2"))
+                        .willReturn(aResponse().withBodyFile("pokeapi_stubs/get_pokemon_details.json")));
+
+        // When
         mockMvc
                 .perform(MockMvcRequestBuilders.post("/pokemon")
                         .contentType(MediaType.APPLICATION_JSON)
@@ -46,6 +63,38 @@ class PokemonIT extends MyHexagonalPokedexIT {
                                 }
                                  """)
                 )
+                // Then
                 .andExpect(status().isOk());
+
+        final Optional<PokemonEntity> savedPokemonEntity = pokemonRepository.findById(2);
+        assertThat(savedPokemonEntity).isPresent();
+        assertThat(savedPokemonEntity.get().getId()).isEqualTo(2);
+        assertThat(savedPokemonEntity.get().getName()).hasToString("ivysaur");
+        assertThat(savedPokemonEntity.get().getAbility()).isEqualTo("overgrow");
+    }
+
+    @Test
+    void should_throw_trying_to_save_already_owned_pokemon() throws Exception {
+        // When
+        final PokemonEntity ownedPokemon = new PokemonEntity(2, "ivysaur", "overgrow");
+        pokemonRepository.save(ownedPokemon);
+        wireMockServer.stubFor(
+                get(
+                        urlPathEqualTo("/pokemon/2"))
+                        .willReturn(aResponse().withBodyFile("pokeapi_stubs/get_pokemon_details.json")));
+        // When
+        mockMvc
+                .perform(MockMvcRequestBuilders.post("/pokemon")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content("""
+                                {
+                                 "id": 2
+                                }
+                                 """)
+                )
+                // Then
+                .andExpect(status().is4xxClientError())
+                .andExpect(jsonPath("$[0].exceptionCode").value("ALREADY_CAPTURED_POKEMON"))
+                .andExpect(jsonPath("$[0].technicalMessage").value("Pokemon with id '2' has already been captured"));
     }
 }
