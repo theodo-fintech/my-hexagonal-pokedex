@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import com.example.myhexagonalpokedex.infrastucture.postgresadapter.entity.PokemonEntity;
 import com.example.myhexagonalpokedex.infrastucture.postgresadapter.repository.PokemonRepository;
 import java.util.Optional;
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -23,6 +24,11 @@ class PokemonIT extends MyHexagonalPokedexIT {
 
     @Autowired
     PokemonRepository pokemonRepository;
+
+    @AfterEach
+    public void tearDown() {
+        pokemonRepository.deleteAll();
+    }
 
     @Test
     void should_retrieve_capturable_pokemons_within_top_twenty_without_owned_pokemon() throws Exception {
