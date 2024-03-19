@@ -39,7 +39,7 @@ class PokemonIT extends MyHexagonalPokedexIT {
                         .willReturn(aResponse().withBodyFile("pokeapi_stubs/get_top_twenty_pokemons.json")));
         // When
         mockMvc
-                .perform(MockMvcRequestBuilders.get("/pokemon/capturable"))
+                .perform(MockMvcRequestBuilders.get("/pokemons/capturable"))
                 // Then
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$", hasSize(3)))
@@ -61,7 +61,7 @@ class PokemonIT extends MyHexagonalPokedexIT {
 
         // When
         mockMvc
-                .perform(MockMvcRequestBuilders.post("/pokemon")
+                .perform(MockMvcRequestBuilders.post("/pokemons")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {
@@ -90,7 +90,7 @@ class PokemonIT extends MyHexagonalPokedexIT {
                         .willReturn(aResponse().withBodyFile("pokeapi_stubs/get_pokemon_details.json")));
         // When
         mockMvc
-                .perform(MockMvcRequestBuilders.post("/pokemon")
+                .perform(MockMvcRequestBuilders.post("/pokemons")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content("""
                                 {

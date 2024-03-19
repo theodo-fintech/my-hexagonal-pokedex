@@ -10,8 +10,8 @@ import java.util.List;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/pokemon")
-@Tag(name = "Pokemon")
+@RequestMapping("/pokemons")
+@Tag(name = "Pokemons")
 public class PokemonController {
     private final CapturablePokemonUseCase capturablePokemonUseCase;
     private final CapturePokemonUseCase capturePokemonUseCase;
