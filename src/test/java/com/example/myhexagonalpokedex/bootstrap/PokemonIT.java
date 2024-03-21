@@ -52,6 +52,28 @@ class PokemonIT extends MyHexagonalPokedexIT {
     }
 
     @Test
+    void should_retrieve_capturable_pokemons_within_top_twenty_with_already_owned_pokemons() throws Exception {
+        // Given
+        final PokemonEntity ownedPokemon = new PokemonEntity(2, "ivysaur", "overgrow");
+        pokemonRepository.save(ownedPokemon);
+
+        wireMockServer.stubFor(
+                get(
+                        urlPathEqualTo("/pokemon"))
+                        .willReturn(aResponse().withBodyFile("pokeapi_stubs/get_top_twenty_pokemons.json")));
+        // When
+        mockMvc
+                .perform(MockMvcRequestBuilders.get("/pokemons/capturable"))
+                // Then
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$", hasSize(2)))
+                .andExpect(jsonPath("$[0].id").value(1))
+                .andExpect(jsonPath("$[0].name").value("bulbasaur"))
+                .andExpect(jsonPath("$[1].id").value(3))
+                .andExpect(jsonPath("$[1].name").value("venusaur"));
+    }
+
+    @Test
     void should_save_new_capturable_pokemon() throws Exception {
         // Given
         wireMockServer.stubFor(
