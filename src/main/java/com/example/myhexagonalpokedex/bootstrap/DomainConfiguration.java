@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Configuration;
 public class DomainConfiguration {
 
     @Bean
-    public CapturablePokemonUseCase capturablePokemonService(PokemonApiFetcher pokemonApiFetcher,
+    public CapturablePokemonUseCase capturablePokemonUseCase(PokemonApiFetcher pokemonApiFetcher,
                                                              PokemonRepositoryFetcher pokemonRepositoryFetcher) {
         return new CapturablePokemonUseCase(pokemonApiFetcher, pokemonRepositoryFetcher);
     }
