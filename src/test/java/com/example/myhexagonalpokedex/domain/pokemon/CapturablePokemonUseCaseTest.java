@@ -28,7 +28,6 @@ class CapturablePokemonUseCaseTest {
         // Given
         final List<Pokemon> mockOwnedPokemonList = List.of(
                 new Pokemon(1, "pokemon-1", "ability-1"),
-                new Pokemon(2, "pokemon-2", "ability-2"),
                 new Pokemon(4, "pokemon-4", "ability-4")
         );
         final List<CapturablePokemon> mockedCapturablePokemons = List.of(
@@ -45,8 +44,12 @@ class CapturablePokemonUseCaseTest {
 
         // Then
         Assertions.assertThat(capturablePokemons)
-                .hasSize(1)
+                .hasSize(2)
                 .containsExactlyInAnyOrder(
+                        new CapturablePokemon(
+                                2,
+                                "pokemon-2"
+                        ),
                         new CapturablePokemon(
                                 3,
                                 "pokemon-3"
